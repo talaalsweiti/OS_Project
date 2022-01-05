@@ -1,8 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="850.0" prefWidth="1350.0" style="-fx-background-color: #495464;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WelcomePageController">
+   <children>
+      <AnchorPane layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" style="-fx-background-color: #F4F4F2;">
+         <children>
+            <HBox layoutX="200.0" layoutY="231.0" prefHeight="300.0" prefWidth="900.0">
+               <children>
+                  <AnchorPane minHeight="300.0" prefWidth="440.0">
+                     <children>
+                        <RadioButton fx:id="choose_file_radio" layoutX="23.0" layoutY="40.0" mnemonicParsing="false" text="Choose File From System" textFill="#495464" underline="true">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="22.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="ChooseGroup" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <Button fx:id="choose_file_btn" layoutX="69.0" layoutY="182.0" mnemonicParsing="false" onAction="#file_chooser" onMouseClicked="#file_chooser" text="Choose File" textFill="#495464">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Button>
+                        <TextField fx:id="choose_path_txt" layoutX="84.0" layoutY="122.0" prefHeight="30.0" prefWidth="339.0" promptText="Enter absolute path">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="23.0" layoutY="126.0" text="Path:" textFill="#495464">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="23.0" layoutY="188.0" text="OR" textFill="#495464">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="300.0" prefWidth="20.0">
+                     <children>
+                        <Separator layoutX="7.0" layoutY="14.0" orientation="VERTICAL" prefHeight="300.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="300.0" prefWidth="440.0">
+                     <children>
+                        <RadioButton fx:id="generate_radio" layoutX="14.0" layoutY="39.0" mnemonicParsing="false" text="Generate new File" textFill="#495464" toggleGroup="$ChooseGroup" underline="true">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="22.0" />
+                           </font>
+                        </RadioButton>
+                        <TextField fx:id="dir_txt" layoutX="109.0" layoutY="182.0" prefHeight="30.0" prefWidth="317.0" promptText="Enter the directory">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="15.0" layoutY="186.0" text="Directory:" textFill="#495464">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="dir_btn" layoutX="63.0" layoutY="246.0" mnemonicParsing="false" onAction="#directory_chooser" onMouseClicked="#directory_chooser" text="Choose Directory" textFill="#495464">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Button>
+                        <Label layoutX="17.0" layoutY="252.0" text="OR" textFill="#495464">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="filename_txt" layoutX="115.0" layoutY="122.0" prefHeight="30.0" prefWidth="311.0" promptText="Enter Filename">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="15.0" layoutY="126.0" text="File Name:" textFill="#495464">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <Label layoutX="303.0" layoutY="79.0" text="Virtual Memory Management Simulation" textFill="#495464" underline="true">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="36.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" layoutX="250.0" layoutY="605.0" prefHeight="80.0" prefWidth="800.0">
+               <children>
+                  <Label fx:id="File" text="File: " textFill="#495464">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="file_result" textFill="#495464">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Button fx:id="start_simulation_btn" layoutX="559.0" layoutY="685.0" mnemonicParsing="false" onAction="#startSimulateSelect" onKeyPressed="#startSimulateSelect" text="Start Simulation" textFill="#495464">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Button>
+            <Label layoutX="636.0" layoutY="573.0" />
+            <HBox alignment="CENTER" layoutX="250.0" layoutY="562.0" prefHeight="40.0" prefWidth="800.0">
+               <children>
+                  <Label fx:id="error" textFill="RED">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </children>
 </AnchorPane>
-
