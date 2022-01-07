@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import model.Simulator;
 
 public class WelcomePageController implements Initializable{
 	
@@ -88,8 +89,9 @@ public class WelcomePageController implements Initializable{
     
     public void startSimulateSelect(ActionEvent event) throws IOException {
     	if(noErrors()) {
+    		Simulator s = new Simulator();
     		Main m = new Main();
-    		boolean cont = m.readFile(choose_path_txt.getText());
+    		boolean cont = s.readFile(choose_path_txt.getText());
     		if(cont)
     			m.changeScene("/view/MainPage.fxml");
     	}
