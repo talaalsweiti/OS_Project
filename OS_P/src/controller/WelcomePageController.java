@@ -99,6 +99,11 @@ public class WelcomePageController implements Initializable{
     		return false;
     	}
     	if(choose_file_radio.isSelected()) {
+    		if(choose_path_txt.getText() == null || choose_path_txt.getText() == "") {
+    			error.setText("You have to specify a file path");
+    			return false;
+    		}
+    		
     		File file = new File(choose_path_txt.getText());
     		if(!file.exists()) {
     			error.setText("File does not exist!");
