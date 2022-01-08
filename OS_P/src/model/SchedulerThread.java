@@ -38,8 +38,8 @@ public class SchedulerThread extends Simulator implements Runnable {
 			int quantumForPt = quantum;
 			for(int i=0; i<quantumForPt && pt.p.duration > 0; i++) {
 				double timeBefore = time;
-				Thread replacement = new Thread(new PageReplacementThread());
-				replacement.start(); //pagefault => 300 in sync
+				//Thread replacement = new Thread(new PageReplacementThread());
+				//replacement.start(); //pagefault => 300 in sync
 				quantumForPt -= (time-timeBefore);
 				checkInNewProcess(++time);
 				pt.p.duration--;

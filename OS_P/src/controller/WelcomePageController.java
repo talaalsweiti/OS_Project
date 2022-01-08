@@ -52,7 +52,7 @@ public class WelcomePageController implements Initializable{
     private RadioButton generate_radio;
 
     @FXML
-    private Button start_simulation_btn;
+    private Button proceed_btn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -62,7 +62,7 @@ public class WelcomePageController implements Initializable{
     
     public void file_chooser(ActionEvent event) {
     	FileChooser fc = new FileChooser();
-    	fc.setInitialDirectory(new File("C:\\Users\\user\\Desktop"));
+    	fc.setInitialDirectory(new File("C:\\"));
     	fc.getExtensionFilters().add(new ExtensionFilter("Text Files", "*.txt"));
     	File f = fc.showOpenDialog(null);
     	
@@ -75,7 +75,7 @@ public class WelcomePageController implements Initializable{
     
     public void directory_chooser(ActionEvent event) {
     	DirectoryChooser dc = new DirectoryChooser();
-    	dc.setInitialDirectory(new File("C:\\Users\\user\\Desktop"));
+    	dc.setInitialDirectory(new File("C:\\"));
     	dc.setTitle("Choose Directory");
        	File f = dc.showDialog(null);
     	
@@ -87,9 +87,20 @@ public class WelcomePageController implements Initializable{
     }
     
     
-    public void startSimulateSelect(ActionEvent event) throws IOException {
+    public void proceedSelect(ActionEvent event) throws IOException {
     	if(noErrors()) {
     		Simulator s = new Simulator();
+    		
+    		String fileName = "";
+    		if(generate_radio.isSelected()) {
+    			fileName+=dir_txt.getText();
+    			fileName+="\\";
+    			fileName+=filename_txt.getText();
+    			s.generateFile(fileName);
+    		}else {
+    			fileName+=choose_path_txt.getText();
+    		}
+    		
     		Main m = new Main();
     		boolean cont = s.readFile(choose_path_txt.getText());
     		if(cont)
