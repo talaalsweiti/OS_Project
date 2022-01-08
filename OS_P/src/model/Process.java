@@ -12,6 +12,8 @@ public class Process {
 	public double turnaround;
 	public double finishTime;
 	public double waitTime;
+	public boolean entered;
+	public int pagePointer;
 	
 	public Process(int PID, double startTime, double duration, int size, ArrayList<Page>pages) {
 		this.PID = PID;
@@ -21,6 +23,8 @@ public class Process {
 		this.pages = pages;
 		this.isFinished = false;
 		this.waitTime = 0;
+		this.entered = false;
+		pagePointer = 0;
 	}
 	
 	public Process() {

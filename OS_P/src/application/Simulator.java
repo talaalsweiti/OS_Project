@@ -13,13 +13,14 @@ import javax.swing.JOptionPane;
 import model.Page;
 import model.Process;
 import model.ProcessThread;
+import model.SchedulerThread;
 
 public class Simulator {
 	public static int numOfProcesses;
 	public static int physicalMemorySize;
 	public static int minNumOfFrames;
 	public static ArrayList<Process> processList;
-	public ArrayList<ProcessThread> allThreads;
+	public static ArrayList<ProcessThread> allThreads;
 	
 	public boolean readFile(String filename) throws FileNotFoundException {
 		File input = new File(filename);
@@ -78,8 +79,14 @@ public class Simulator {
 					ArrayList<Page> pages = new ArrayList<Page>();
 					for(int j=4; j<lineSplit.length; j++) {
 						//!check if page number in range
-						Page p = new Page(PID, lineSplit[j]);
-						pages.add(p);
+						int pageNumber = (int) (Integer.parseInt(lineSplit[j].trim(), 16) / Math.pow(2, 12));
+						if(pageNumber >= 0 && pageNumber < size) {
+							Page p = new Page(PID, pageNumber, lineSplit[j]);
+							pages.add(p);
+						}
+						else {
+							JOptionPane.showInternalMessageDialog(null, "Some pages were neglected");
+						}
 					}
 					
 					Process pr = new Process(PID, startTime, duration, size, pages);
@@ -97,6 +104,11 @@ public class Simulator {
 			for(int k=0; k<tempList.size(); k++) {
 				processList.add(tempList.get(k));
 			}
+			
+			makeThreadList();
+			Thread schThread = new Thread(new SchedulerThread());
+			schThread.start();
+			
 			sc.close();
 			return true;
 		} catch(Exception FileNotFoundException) {
@@ -137,9 +149,13 @@ public class Simulator {
 	
 	
 	public void makeThreadList() {
+		allThreads = new ArrayList<ProcessThread> ();
 		for(int i=0; i<processList.size(); i++) {
 			ProcessThread th = new ProcessThread(processList.get(i));
 			allThreads.add(th);
+		}
+		for(ProcessThread pt: allThreads) {
+			System.out.println(pt.p.PID);
 		}
 	}
 	
