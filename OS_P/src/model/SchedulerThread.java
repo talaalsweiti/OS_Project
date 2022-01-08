@@ -7,8 +7,12 @@ import application.Simulator;
 
 public class SchedulerThread extends Simulator implements Runnable {
 	
-	Frame[] memory;
+	volatile static Frame[] memory;
+	volatile static int filledSize;
+	volatile static int memoryIndex;
+	volatile static Page nextPage; 
 	Queue<ProcessThread> readyQueue;
+	Queue<ProcessThread> blockedQueue;
 	int quantum;
 	//1000 cycles in a second
 	volatile static double time;
@@ -16,8 +20,11 @@ public class SchedulerThread extends Simulator implements Runnable {
 	public SchedulerThread() {
 		memory = new Frame[physicalMemorySize];
 		readyQueue = new LinkedList<ProcessThread>();
+		blockedQueue = new LinkedList<ProcessThread>();
 		quantum = 20; //!return to this
 		time = 0;
+		filledSize = 0;
+		memoryIndex = 0;
 	}
 	
 	@Override
@@ -38,18 +45,32 @@ public class SchedulerThread extends Simulator implements Runnable {
 			readyQueue.remove();
 			
 			int quantumForPt = quantum;
+			boolean needPage = false;
 			for(int i=pt.p.pagePointer; i<quantumForPt+pt.p.pagePointer && pt.p.duration > 0; i++) {
 				double timeBefore = time;
 				if(!pageInMemory(pt.p.PID, pt.p.pages.get(i))) {
-					//Thread replacement = new Thread(new PageReplacementThread());
-					//replacement.start(); //pagefault => 300 in sync
+					nextPage = pt.p.pages.get(i);
+					//context switch
+					blockedQueue.add(pt);
+					time++;
+					needPage = true; //to do context switching, we take the process out
+					goGetPage(pt); //do page fault
+					break;
+					
+				}
+				else {
+					int index = memoryPageIndex(pt.p.PID, pt.p.pages.get(i));
+					memory[index].lastTimeUsed = time;
 				}
 				quantumForPt -= (time-timeBefore);
 				checkInNewProcess(++time);
 				pt.p.duration--;
 				pt.p.pagePointer++;
 			}
-			
+		
+			if(needPage) { //break from this process and take another one
+				continue;
+			}
 			if(pt.p.duration <= 0) {
 				pt.p.isFinished = true;
 				//System.out.println("Done with Process " + pt.p.PID);
@@ -97,7 +118,27 @@ public class SchedulerThread extends Simulator implements Runnable {
 		return false;
 	}
 	
+	public int memoryPageIndex(int pid, Page page) {
+		for(int i=0; i<memory.length; i++) {
+			if(memory[i].page.pageNumber == page.pageNumber && memory[i].page.processID == pid) {
+				return i;
+			}
+		}
+		return -1;
+	}
 	
+	
+	public void goGetPage(ProcessThread pt) {
+		Thread replacement = new Thread(new PageReplacementThread());
+		replacement.start(); //pagefault => 300 in sync
+		try {
+			replacement.join();
+			readyQueue.add(pt);
+		}catch(Exception InterruptedException) {
+			
+		}
+		
+	}
 	
 	
 }

@@ -1,22 +1,14 @@
 package application;
 	
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
-import javax.swing.JOptionPane;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.Page;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.fxml.FXMLLoader;
-import model.Process;
-import model.ProcessThread;
 
 public class Main extends Application {
 	
