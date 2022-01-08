@@ -4,6 +4,13 @@ import application.Simulator;
 
 public class PageReplacementThread extends Simulator implements Runnable {
 	
+	volatile static Page newPage;
+	volatile static int position;
+	
+	public PageReplacementThread() {
+		newPage = null;
+		position = -1;
+	}
 	
 	@Override
 	public void run() {
@@ -20,12 +27,12 @@ public class PageReplacementThread extends Simulator implements Runnable {
 					SchedulerThread.memory[SchedulerThread.memoryIndex].bitReference = 0;
 					SchedulerThread.memoryIndex = (SchedulerThread.memoryIndex + 1)%physicalMemorySize;
 				}
-				Page newPage = new Page(SchedulerThread.nextPage.processID, SchedulerThread.nextPage.pageNumber, SchedulerThread.nextPage.pageLine);
-				SchedulerThread.memory[SchedulerThread.memoryIndex] = new Frame();
-				SchedulerThread.memory[SchedulerThread.memoryIndex].page = newPage;
-				SchedulerThread.memory[SchedulerThread.memoryIndex].bitReference = 1;
+				newPage = new Page(SchedulerThread.nextPage.processID, SchedulerThread.nextPage.pageNumber, SchedulerThread.nextPage.pageLine);
+				position = SchedulerThread.memoryIndex;
+				
+				Thread mmt = new Thread(new MemoryManagementThread());
+				mmt.start();
 				SchedulerThread.memoryIndex = (SchedulerThread.memoryIndex + 1)%physicalMemorySize;
-				SchedulerThread.memory[SchedulerThread.memoryIndex].lastTimeUsed = SchedulerThread.time;
 				
 			}else { //clock
 				int minIndex = 0;
@@ -34,11 +41,10 @@ public class PageReplacementThread extends Simulator implements Runnable {
 						minIndex = i;
 					}
 				}
-				Page newPage = new Page(SchedulerThread.nextPage.processID, SchedulerThread.nextPage.pageNumber, SchedulerThread.nextPage.pageLine);
-				SchedulerThread.memory[minIndex] = new Frame();
-				SchedulerThread.memory[minIndex].page = newPage;
-				SchedulerThread.memory[minIndex].bitReference = 1;
-				SchedulerThread.memory[minIndex].lastTimeUsed = SchedulerThread.time;
+				newPage = new Page(SchedulerThread.nextPage.processID, SchedulerThread.nextPage.pageNumber, SchedulerThread.nextPage.pageLine);
+				position = minIndex;
+				Thread mmt = new Thread(new MemoryManagementThread());
+				mmt.start();
 			}
 		}
 		else { //normal page fault
@@ -46,10 +52,11 @@ public class PageReplacementThread extends Simulator implements Runnable {
 			while(SchedulerThread.memory[i].page != null) {
 				i++;
 			}
-			SchedulerThread.memory[i].page = SchedulerThread.nextPage;
-			SchedulerThread.memory[i].bitReference = 1;
+			newPage = SchedulerThread.nextPage;
+			position = i;
 			SchedulerThread.filledSize++;
-			SchedulerThread.memory[i].lastTimeUsed = SchedulerThread.time;
+			Thread mmt = new Thread(new MemoryManagementThread());
+			mmt.start();
 			
 		}
 		
