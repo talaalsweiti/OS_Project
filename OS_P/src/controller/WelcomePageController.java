@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import java.io.*;
 
 import application.Main;
-
+import application.Simulator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import model.Simulator;
 
 public class WelcomePageController implements Initializable{
 	

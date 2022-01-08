@@ -3,6 +3,8 @@ package model;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import application.Simulator;
+
 public class SchedulerThread extends Simulator implements Runnable {
 	
 	Frame[] memory;

@@ -1,6 +1,7 @@
-package model;
+package application;
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,6 +9,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
+
+import model.Page;
+import model.Process;
+import model.ProcessThread;
 
 public class Simulator {
 	public static int numOfProcesses;

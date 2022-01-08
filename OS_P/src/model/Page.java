@@ -2,8 +2,8 @@ package model;
 
 public class Page {
 	
-	int processID;
-	String pageNumber;
+	public int processID;
+	public String pageNumber;
 	
 	public Page(int processID, String pageNumber) {
 		this.processID = processID;
