@@ -2,11 +2,13 @@ package model;
 
 public class Page {
 	
-	int processID;
-	String pageNumber;
+	public int processID;
+	public String pageLine;
+	public int pageNumber;
 	
-	public Page(int processID, String pageNumber) {
+	public Page(int processID, int pageNumber, String pageLine) {
 		this.processID = processID;
 		this.pageNumber = pageNumber;
+		this.pageLine = pageLine;
 	}
 }

@@ -1,10 +1,13 @@
 package model;
 
 public class Frame {
-	Page page;
-	boolean bitReference;
+	public Page page;
+	public int bitReference;
+	public double lastTimeUsed;
 	
 	public Frame() {
-		this.bitReference = false;
+		page = null;
+		this.bitReference = 0;
+		this.lastTimeUsed = -1;
 	}
 }
