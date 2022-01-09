@@ -48,20 +48,25 @@ public class SchedulerThread extends Simulator implements Runnable {
 			boolean needPage = false;
 			for(int i=pt.p.pagePointer; i<quantumForPt+pt.p.pagePointer && pt.p.duration > 0; i++) {
 				double timeBefore = time;
-				if(!pageInMemory(pt.p.PID, pt.p.pages.get(i))) {
-					nextPage = pt.p.pages.get(i);
-					//context switch
-					blockedQueue.add(pt);
-					time++;
-					needPage = true; //to do context switching, we take the process out
-					goGetPage(pt); //do page fault
-					break;
-					
+				if(i<pt.p.pages.size()) {
+					if(!pageInMemory(pt.p.PID, pt.p.pages.get(i))) {
+						nextPage = pt.p.pages.get(i);
+						//context switch
+						blockedQueue.add(pt);
+						time++;
+						needPage = true; //to do context switching, we take the process out
+						pt.p.pageFaults++;
+						Simulator.totalPageFaults++;
+						goGetPage(pt); //do page fault
+						break;
+						
+					}
+					else {
+						int index = memoryPageIndex(pt.p.PID, pt.p.pages.get(i));
+						memory[index].lastTimeUsed = time;
+					}
 				}
-				else {
-					int index = memoryPageIndex(pt.p.PID, pt.p.pages.get(i));
-					memory[index].lastTimeUsed = time;
-				}
+				
 				quantumForPt -= (time-timeBefore);
 				checkInNewProcess(++time);
 				pt.p.duration--;
@@ -111,7 +116,7 @@ public class SchedulerThread extends Simulator implements Runnable {
 	
 	public boolean pageInMemory(int pid, Page page) {
 		for(int i=0; i<memory.length; i++) {
-			if(memory[i].page.pageNumber == page.pageNumber && memory[i].page.processID == pid) {
+			if(memory[i].page!= null && memory[i].page.pageNumber == page.pageNumber && memory[i].page.processID == pid) {
 				return true;
 			}
 		}
@@ -120,7 +125,7 @@ public class SchedulerThread extends Simulator implements Runnable {
 	
 	public int memoryPageIndex(int pid, Page page) {
 		for(int i=0; i<memory.length; i++) {
-			if(memory[i].page.pageNumber == page.pageNumber && memory[i].page.processID == pid) {
+			if(memory[i].page != null && memory[i].page.pageNumber == page.pageNumber && memory[i].page.processID == pid) {
 				return i;
 			}
 		}

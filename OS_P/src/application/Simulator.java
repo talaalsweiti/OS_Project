@@ -22,14 +22,16 @@ public class Simulator {
 	public static int minNumOfFrames;
 	public static ArrayList<Process> processList;
 	public static ArrayList<ProcessThread> allThreads;
+	public static int totalPageFaults = 0;
 	
 	public boolean readFile(String filename) throws FileNotFoundException {
 		File input = new File(filename);
 		try {
 			Scanner sc = new Scanner(input);
-			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { System.out.println("1"); errorInFile(); sc.close(); return false;}
 			String line = sc.nextLine();
 			if(line.contains(" ")) {
+				System.out.println("2");
 				errorInFile();
 				sc.close();
 				return false;
@@ -37,9 +39,10 @@ public class Simulator {
 			else {
 				numOfProcesses = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) {System.out.println("3"); errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
+				System.out.println("4");
 				errorInFile();
 				sc.close();
 				return false;
@@ -47,9 +50,10 @@ public class Simulator {
 			else {
 				physicalMemorySize = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { System.out.println("5"); errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
+				System.out.println("6");
 				errorInFile();
 				sc.close();
 				return false;
@@ -58,7 +62,7 @@ public class Simulator {
 				minNumOfFrames = Integer.parseInt(line);
 			}
 			ArrayList<Process> tempList = new ArrayList<Process>();
-			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { System.out.println("7"); errorInFile(); sc.close(); return false;}
 			
 			while(sc.hasNextLine()) {
 				line = sc.nextLine();
@@ -103,6 +107,7 @@ public class Simulator {
 					tempList.add(pr);
 				}
 				else {
+					System.out.println("8");
 					errorInFile();
 					sc.close();
 					return false;
@@ -121,6 +126,7 @@ public class Simulator {
 			sc.close();
 			return true;
 		} catch(Exception FileNotFoundException) {
+			System.out.println("Here");
 			errorInFile();
 			return false;
 		}
@@ -189,9 +195,9 @@ public class Simulator {
 			ProcessThread th = new ProcessThread(processList.get(i));
 			allThreads.add(th);
 		}
-		for(ProcessThread pt: allThreads) {
-			System.out.println(pt.p.PID);
-		}
+//		for(ProcessThread pt: allThreads) {
+//			System.out.println(pt.p.PID);
+//		}
 	}
 	
 	

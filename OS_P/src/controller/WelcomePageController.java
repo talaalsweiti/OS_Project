@@ -102,7 +102,7 @@ public class WelcomePageController implements Initializable{
     		}
     		
     		Main m = new Main();
-    		boolean cont = s.readFile(choose_path_txt.getText());
+    		boolean cont = s.readFile(fileName);
     		if(cont)
     			m.changeScene("/view/MainPage.fxml");
     	}
