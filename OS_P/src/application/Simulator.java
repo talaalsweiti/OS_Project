@@ -6,14 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
-
+//from all to ready
+import model.Frame;
 import model.Page;
 import model.Process;
 import model.ProcessThread;
+import model.Scheduler;
 import model.SchedulerThread;
 
 public class Simulator {
@@ -24,14 +28,36 @@ public class Simulator {
 	public static ArrayList<ProcessThread> allThreads;
 	public static int totalPageFaults = 0;
 	
+	public static Frame[] memory;
+	public static int filledSize;
+	public static int memoryIndex;
+	public static Page nextPage; 
+	public static Queue<ProcessThread> readyQueue;
+	public static Queue<ProcessThread> blockedQueue;
+	public static int quantum;
+	//1000 cycles in a second
+	public static double time;
+	
+	public Simulator() {
+		memory = new Frame[physicalMemorySize];
+		for(int i=0; i<physicalMemorySize; i++) {
+			memory[i] = new Frame();
+		}
+		readyQueue = new LinkedList<ProcessThread>();
+		blockedQueue = new LinkedList<ProcessThread>();
+		quantum = 20; //!return to this
+		time = 0;
+		filledSize = 0;
+		memoryIndex = 0;
+	}
+	
 	public boolean readFile(String filename) throws FileNotFoundException {
 		File input = new File(filename);
 		try {
 			Scanner sc = new Scanner(input);
-			if(!sc.hasNextLine()) { System.out.println("1"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { errorInFile(); sc.close(); return false;}
 			String line = sc.nextLine();
 			if(line.contains(" ")) {
-				System.out.println("2");
 				errorInFile();
 				sc.close();
 				return false;
@@ -39,10 +65,9 @@ public class Simulator {
 			else {
 				numOfProcesses = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) {System.out.println("3"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
-				System.out.println("4");
 				errorInFile();
 				sc.close();
 				return false;
@@ -50,10 +75,9 @@ public class Simulator {
 			else {
 				physicalMemorySize = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) { System.out.println("5"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
-				System.out.println("6");
 				errorInFile();
 				sc.close();
 				return false;
@@ -62,7 +86,7 @@ public class Simulator {
 				minNumOfFrames = Integer.parseInt(line);
 			}
 			ArrayList<Process> tempList = new ArrayList<Process>();
-			if(!sc.hasNextLine()) { System.out.println("7"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { errorInFile(); sc.close(); return false;}
 			
 			while(sc.hasNextLine()) {
 				line = sc.nextLine();
@@ -89,6 +113,7 @@ public class Simulator {
 					}
 					double startTime = Double.parseDouble(lineSplit[1]);
 					double duration = Double.parseDouble(lineSplit[2]);
+					duration *=60;
 					int size = Integer.parseInt(lineSplit[3]);
 					ArrayList<Page> pages = new ArrayList<Page>();
 					for(int j=4; j<lineSplit.length; j++) {
@@ -99,7 +124,7 @@ public class Simulator {
 							pages.add(p);
 						}
 						else {
-							JOptionPane.showInternalMessageDialog(null, "Some pages were neglected");
+							JOptionPane.showInternalMessageDialog(null, "Some pages were neglected, size error");
 						}
 					}
 					
@@ -107,7 +132,6 @@ public class Simulator {
 					tempList.add(pr);
 				}
 				else {
-					System.out.println("8");
 					errorInFile();
 					sc.close();
 					return false;
@@ -120,13 +144,10 @@ public class Simulator {
 			}
 			
 			makeThreadList();
-			Thread schThread = new Thread(new SchedulerThread());
-			schThread.start();
 			
 			sc.close();
 			return true;
 		} catch(Exception FileNotFoundException) {
-			System.out.println("Here");
 			errorInFile();
 			return false;
 		}
@@ -195,13 +216,18 @@ public class Simulator {
 			ProcessThread th = new ProcessThread(processList.get(i));
 			allThreads.add(th);
 		}
-//		for(ProcessThread pt: allThreads) {
-//			System.out.println(pt.p.PID);
-//		}
 	}
 	
-	
-	
+	//!check back if anything is missing
+	public void startSimulation() throws InterruptedException {
+		Thread schThread = new Thread(new SchedulerThread(new Scheduler(3, null)));
+		schThread.start();
+		
+		schThread.join();
+		schThread.stop();
+		
+		//write result to screen
+	}
 	
 	
 }
