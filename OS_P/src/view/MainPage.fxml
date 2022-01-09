@@ -1,8 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+
+<AnchorPane prefHeight="850.0" prefWidth="1350.0" style="-fx-background-color: #495464;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" style="-fx-background-color: #F4F4F2;">
+         <top>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <RadioButton layoutX="26.0" layoutY="86.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="250.0" text="Second-Chance FIFO">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="algorithm" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <Label layoutX="28.0" layoutY="38.0" prefHeight="44.0" prefWidth="201.0" text="Choose Algorithm">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <RadioButton layoutX="27.0" layoutY="129.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="202.0" text="Clock" toggleGroup="$algorithm">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </RadioButton>
+                  <Label alignment="CENTER" layoutX="1070.0" layoutY="41.0" prefHeight="44.0" prefWidth="201.0" text="Time Quantum">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <TextField layoutX="1070.0" layoutY="87.0" prefHeight="35.0" prefWidth="200.0" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="505.0" layoutY="39.0" prefHeight="53.0" prefWidth="279.0" text="Virtual Memory" textAlignment="CENTER" textOverrun="CLIP" underline="true">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="36.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="453.0" layoutY="97.0" prefHeight="53.0" prefWidth="388.0" text="Management System" textAlignment="CENTER" textOverrun="CLIP" underline="true">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="36.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top>
+         <left>
+            <AnchorPane prefHeight="600.0" prefWidth="491.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextArea layoutX="28.0" layoutY="53.0" prefHeight="527.0" prefWidth="421.0" />
+                  <Label alignment="CENTER" layoutX="138.0" prefHeight="44.0" prefWidth="201.0" text="Memory view" underline="true">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </left>
+         <center>
+            <AnchorPane prefHeight="565.0" prefWidth="767.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TableView layoutX="73.0" layoutY="58.0" prefHeight="386.0" prefWidth="692.0">
+                    <columns>
+                      <TableColumn prefWidth="65.0" text="PID" />
+                      <TableColumn prefWidth="85.0" text="Start Time" />
+                        <TableColumn prefWidth="75.0" text="Duration" />
+                        <TableColumn prefWidth="93.0" text="Wait Time" />
+                        <TableColumn prefWidth="81.0" text="Finish Time" />
+                        <TableColumn prefWidth="95.0" text="TurnAround " />
+                        <TableColumn prefWidth="96.0" text="Num Of Pages" />
+                        <TableColumn prefWidth="102.0" text="Num Of Faults" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="12.0" layoutY="540.0" prefHeight="36.0" prefWidth="200.0" text="Page Faults Rate:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <TextArea layoutX="215.0" layoutY="539.0" prefHeight="35.0" prefWidth="90.0" />
+                  <Button layoutX="562.0" layoutY="485.0" mnemonicParsing="false" text="Start Simulation">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="28.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="12.0" layoutY="480.0" prefHeight="36.0" prefWidth="200.0" text="Total Page Faults:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <TextArea layoutX="215.0" layoutY="480.0" prefHeight="35.0" prefWidth="90.0" />
+                  <Label alignment="CENTER" layoutX="115.0" prefHeight="44.0" prefWidth="269.0" text="Process Information" underline="true">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>
-
