@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -135,15 +136,38 @@ public class Simulator {
 	
 	public void generateFile(String filename) {
 		File newFile = new File(filename);
-		 try {
-	      FileWriter myWriter = new FileWriter(newFile,true);
-		  myWriter.write("1 2 3\n");
-		  //n lines
-		  myWriter.write("1 1 2 3 A1");
-		  myWriter.close();
+		try {
+			FileWriter myWriter = new FileWriter(newFile, true);
+
+			Random rand = new Random();
+			int upperbound = 10;
+			int processesNum = rand.nextInt(upperbound) + 1;
+
+			int physicalMemSize = rand.nextInt(); // size of physical memory in frames
+			int minimumFrames = rand.nextInt();// minimum frames per process
+
+			myWriter.write(processesNum + " " + physicalMemSize + " " + minimumFrames + "\n");
+
+			for (int i = 1; i <= processesNum; i++) {
+				// id , start , duration , size , memory traces
+				int duration = rand.nextInt(10) + 1;
+				int size = rand.nextInt();
+				int numOfMemoryTraces = rand.nextInt();
+				String memoryTraces = "";
+				
+				for(int j=0;j<numOfMemoryTraces;j++) {
+					memoryTraces += Integer.toHexString(rand.nextInt());
+					if(j!=numOfMemoryTraces-1) {
+						memoryTraces+=" ";
+					}
+				}
+				
+				myWriter.write(i + " " + rand.nextInt() + " " + duration + " " + size + " " + memoryTraces + "\n");
+			}
+			myWriter.close();
 		} catch (IOException e) {
-		  System.out.println("An error occurred.");
-		  e.printStackTrace();
+			System.out.println("An error occurred.");
+			e.printStackTrace();
 		}
 	}
 	
