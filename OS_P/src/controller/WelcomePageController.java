@@ -95,6 +95,7 @@ public class WelcomePageController implements Initializable{
     			fileName+=dir_txt.getText();
     			fileName+="\\";
     			fileName+=filename_txt.getText();
+    			fileName += ".txt";
     			s.generateFile(fileName);
     		}else {
     			fileName+=choose_path_txt.getText();
