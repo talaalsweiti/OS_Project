@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Process {
+public class MyProcess {
 	public int PID;
 	public double startTime;
 	public double duration;
@@ -15,8 +15,9 @@ public class Process {
 	public boolean entered;
 	public int pagePointer;
 	public int pageFaults;
+	public int pagesNum;
 	
-	public Process(int PID, double startTime, double duration, int size, ArrayList<Page>pages) {
+	public MyProcess(int PID, double startTime, double duration, int size, ArrayList<Page>pages) {
 		this.PID = PID;
 		this.startTime = startTime;
 		this.duration = duration;
@@ -27,5 +28,6 @@ public class Process {
 		this.entered = false;
 		pagePointer = 0;
 		this.pageFaults = 0;
+		pagesNum = pages.size();
 	}
 }

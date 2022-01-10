@@ -1,9 +1,9 @@
 package model;
 
 public class ProcessThread implements Runnable{
-	public Process p;
+	public MyProcess p;
 	
-	public ProcessThread(Process p) {
+	public ProcessThread(MyProcess p) {
 		this.p = p;
 	}
 	

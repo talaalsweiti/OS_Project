@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 //from all to ready
 import model.Frame;
 import model.Page;
-import model.Process;
+import model.MyProcess;
 import model.ProcessThread;
 import model.Scheduler;
 //import model.SchedulerThread;
@@ -25,7 +25,7 @@ public class Simulator{
 	public static int numOfProcesses;
 	public static int physicalMemorySize;
 	public static int minNumOfFrames;
-	public static ArrayList<Process> processList;
+	public static ArrayList<MyProcess> processList;
 	public static ArrayList<ProcessThread> allThreads;
 	public static int totalPageFaults = 0;
 	
@@ -38,7 +38,7 @@ public class Simulator{
 	public static int quantum;
 	//1000 cycles in a second
 	public static double time;
-	//public static int working = 0;
+	public static int algorithm=1;
 	
 	public Simulator() {
 		memory = new Frame[physicalMemorySize];
@@ -96,7 +96,7 @@ public class Simulator{
 				minNumOfFrames = Integer.parseInt(line);
 			}
 			
-			ArrayList<Process> tempList = new ArrayList<Process>();
+			ArrayList<MyProcess> tempList = new ArrayList<MyProcess>();
 			if(!sc.hasNextLine()) { System.out.println("7"); errorInFile(); sc.close(); return false;}
 			
 			while(sc.hasNextLine()) {
@@ -139,7 +139,7 @@ public class Simulator{
 						}
 					}
 					
-					Process pr = new Process(PID, startTime, duration, size, pages);
+					MyProcess pr = new MyProcess(PID, startTime, duration, size, pages);
 					tempList.add(pr);
 				}
 				else {
@@ -151,14 +151,14 @@ public class Simulator{
 				
 			}
 			
-			processList = new ArrayList<Process>();
+			processList = new ArrayList<MyProcess>();
 			for(int k=0; k<tempList.size(); k++) {
 				processList.add(tempList.get(k));
 			}
 			
 			makeThreadList();
 			
-			startSimulation();
+			
 			sc.close();
 			return true;
 		} catch(Exception FileNotFoundException) {
@@ -169,8 +169,8 @@ public class Simulator{
 		
 	}
 	
-	public boolean searchPID(int PID, ArrayList<Process> tempList) {
-		for(Process p: tempList) {
+	public boolean searchPID(int PID, ArrayList<MyProcess> tempList) {
+		for(MyProcess p: tempList) {
 			if(p.PID == PID) {
 				return false;
 			}
@@ -234,14 +234,19 @@ public class Simulator{
 	}
 	
 	//!check back if anything is missing
-	public void startSimulation(){
+	public static void startSimulation(){
 		memory = new Frame[physicalMemorySize];
 		for(int i=0; i<physicalMemorySize; i++) {
 			memory[i] = new Frame();
 		}
 		Thread th = new Thread(new SchedulerThread(new Scheduler()));
-		
 		th.run();
+		try {
+			th.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
