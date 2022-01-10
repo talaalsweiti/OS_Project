@@ -3,6 +3,8 @@ package model;
 import application.Simulator;
 
 public class Scheduler {
+	   
+	
 	
 	public void simulate() {
 		while(!allFinished()) {
