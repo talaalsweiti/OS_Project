@@ -42,13 +42,13 @@
                         <Font name="Arial Rounded MT Bold" size="22.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="quantum_text" layoutX="1070.0" layoutY="87.0" prefHeight="35.0" prefWidth="200.0" />
+                  <TextField fx:id="quantum_text" layoutX="1070.0" layoutY="87.0" prefHeight="35.0" prefWidth="200.0" text="20" />
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="505.0" layoutY="34.0" prefHeight="53.0" prefWidth="279.0" text="Virtual Memory" textAlignment="CENTER" textOverrun="CLIP" underline="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="36.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="453.0" layoutY="91.0" prefHeight="53.0" prefWidth="388.0" text="Management System" textAlignment="CENTER" textOverrun="CLIP" underline="true">
+                  <Label fx:id="turnAround" alignment="CENTER" contentDisplay="CENTER" layoutX="453.0" layoutY="91.0" prefHeight="53.0" prefWidth="388.0" text="Management System" textAlignment="CENTER" textOverrun="CLIP" underline="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="36.0" />
                      </font>
@@ -104,8 +104,16 @@
                         <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="total_faults" layoutX="195.0" layoutY="481.0" prefHeight="35.0" prefWidth="90.0" />
-                  <TextField fx:id="faults_rate" layoutX="195.0" layoutY="539.0" prefHeight="35.0" prefWidth="90.0" />
+                  <Label fx:id="totalPageFaults" layoutX="199.0" layoutY="476.0" prefHeight="44.0" prefWidth="201.0">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="faultsRate" layoutX="194.0" layoutY="534.0" prefHeight="44.0" prefWidth="201.0">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="22.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </center>

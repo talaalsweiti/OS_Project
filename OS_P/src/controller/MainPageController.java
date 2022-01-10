@@ -8,6 +8,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,7 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import model.MyProcess;
 
-public class MainPageController {
+public class MainPageController implements Initializable{
 
     @FXML
     private TableView<MyProcess> process_table;
@@ -65,14 +67,22 @@ public class MainPageController {
     private RadioButton clock;
     @FXML
     private RadioButton second_chance;
+
+
     @FXML
+    private Label totalPageFaults;
+    
+    @FXML
+    private Label faultsRate;
     
     
     ObservableList<MyProcess> list;
     
    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    	list = FXCollections.observableArrayList();
     	pid.setCellValueFactory(new PropertyValueFactory<MyProcess,Integer>("PID"));
     	start_time.setCellValueFactory(new PropertyValueFactory<MyProcess,Double>("startTime"));
     	finish_time.setCellValueFactory(new PropertyValueFactory<MyProcess,Double>("finishTime"));
@@ -93,13 +103,18 @@ public class MainPageController {
     		Simulator.algorithm =2;
     	}
     	Simulator.startSimulation();
-    	list = FXCollections.observableArrayList();
     	
+    	double totalPages=0;
+    	int pageFaults=Simulator.totalPageFaults;
     	for(int i=0;i<Simulator.allThreads.size();i++) {
     		MyProcess ppp = Simulator.allThreads.get(i).p;
-    		System.out.println("id" +ppp.PID);
+    		totalPages+=ppp.pagesNum;
     		list.add(ppp);
-    	}
+    	}   
+    	Simulator.finalResult+="Done!";
+    	memory_view.appendText(Simulator.finalResult);
+    	totalPageFaults.setText(pageFaults+"");
+    	faultsRate.setText((pageFaults/totalPages)*100 + "%");
     	process_table.setItems(list);
     }
 

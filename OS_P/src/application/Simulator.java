@@ -39,7 +39,7 @@ public class Simulator{
 	//1000 cycles in a second
 	public static double time;
 	public static int algorithm=1;
-	
+	public static String finalResult = "";
 	public Simulator() {
 		memory = new Frame[physicalMemorySize];
 		for(int i=0; i<physicalMemorySize; i++) {
@@ -47,7 +47,7 @@ public class Simulator{
 		}
 		readyQueue = new LinkedList<ProcessThread>();
 		blockedQueue = new LinkedList<ProcessThread>();
-		quantum = 20; //!return to this
+		quantum = 20; 
 		time = 0;
 		filledSize = 0;
 		memoryIndex = 0;
@@ -62,10 +62,9 @@ public class Simulator{
 		try {
 			
 			Scanner sc = new Scanner(input);
-			if(!sc.hasNextLine()) { System.out.println("1"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { errorInFile(); sc.close(); return false;}
 			String line = sc.nextLine();
 			if(line.contains(" ")) {
-				System.out.println("2");
 				errorInFile();
 				sc.close();
 				return false;
@@ -73,10 +72,9 @@ public class Simulator{
 			else {
 				numOfProcesses = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) {System.out.println("3"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
-				System.out.println("4");
 				errorInFile();
 				sc.close();
 				return false;
@@ -84,10 +82,9 @@ public class Simulator{
 			else {
 				physicalMemorySize = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) { System.out.println("5"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) {  errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
-				System.out.println("6");
 				errorInFile();
 				sc.close();
 				return false;
@@ -97,7 +94,7 @@ public class Simulator{
 			}
 			
 			ArrayList<MyProcess> tempList = new ArrayList<MyProcess>();
-			if(!sc.hasNextLine()) { System.out.println("7"); errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
 			
 			while(sc.hasNextLine()) {
 				
@@ -128,7 +125,6 @@ public class Simulator{
 					int size = Integer.parseInt(lineSplit[3]);
 					ArrayList<Page> pages = new ArrayList<Page>();
 					for(int j=4; j<lineSplit.length; j++) {
-						//!check if page number in range
 						int pageNumber = (int) (Integer.parseInt(lineSplit[j].trim(), 16) / Math.pow(2, 12));
 						if(pageNumber >= 0 && pageNumber < size) {
 							Page p = new Page(PID, pageNumber, lineSplit[j]);
@@ -143,7 +139,6 @@ public class Simulator{
 					tempList.add(pr);
 				}
 				else {
-					System.out.println("8");
 					errorInFile();
 					sc.close();
 					return false;
@@ -155,14 +150,10 @@ public class Simulator{
 			for(int k=0; k<tempList.size(); k++) {
 				processList.add(tempList.get(k));
 			}
-			
-			makeThreadList();
-			
-			
+			makeThreadList();			
 			sc.close();
 			return true;
 		} catch(Exception FileNotFoundException) {
-			System.out.println("Here");
 			errorInFile();
 			return false;
 		}
@@ -233,7 +224,6 @@ public class Simulator{
 		}
 	}
 	
-	//!check back if anything is missing
 	public static void startSimulation(){
 		memory = new Frame[physicalMemorySize];
 		for(int i=0; i<physicalMemorySize; i++) {
