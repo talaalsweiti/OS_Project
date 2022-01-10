@@ -69,6 +69,7 @@ public class Scheduler {
 				workingProcess.p.isFinished = true;
 				workingProcess.p.finishTime = Simulator.time;
 				workingProcess.p.turnaround = workingProcess.p.finishTime - workingProcess.p.startTime;
+				if(workingProcess.p.duration <0)workingProcess.p.duration=0;
 				Thread mm = new Thread(new MemoryManagementThread(new MemoryManagement(3, null, 0, workingProcess.p.PID)));
 				mm.run();
 				try {
