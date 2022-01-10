@@ -39,6 +39,7 @@ public class Process {
 			if(i < pages.size()) { //if we finish tracing and duration still not finished
 				if(!pageInMemory(PID, pages.get(i))) {
 	
+					
 					Scheduler newScheduler = new Scheduler(1, getProcess());
 					SchedulerThread newSchedulerThread = new SchedulerThread(newScheduler);
 					Thread workingSchedulerMainThread = new Thread(newSchedulerThread);
@@ -51,17 +52,25 @@ public class Process {
 					pageFaults++;
 					Simulator.totalPageFaults++;
 					
-					//!Memory Managmenet
-					//nextPage = pt.p.pages.get(i);
-					//goGetPage(pt); //do page fault
+					Thread pr = new Thread(new PageReplacementThread(new PageReplacement(pages.get(i))));
+					pr.start();
+					
+					pr.join();
+					
+					Thread sc = new Thread(new SchedulerThread(new Scheduler(2, getProcess())));
+					sc.start();
+					
 					break;
 				}
 				else {
 					int index = memoryPageIndex(PID, pages.get(i));
-					//!get back here when writing memory management
-					Simulator.memory[index].lastTimeUsed = Simulator.time;
-					Simulator.memory[index].bitReference = 1;
+					//page exists just update
+					Thread pr = new Thread(new MemoryManagementThread(new MemoryManagement(2, null, index, -1)));
+					pr.start();
 					Simulator.time+=0.2;
+					Thread sc = new Thread(new SchedulerThread(new Scheduler(3, null)));
+					sc.start();
+					
 				}
 			}
 			quantumForPt -= (Simulator.time - timeBefore);
@@ -77,10 +86,23 @@ public class Process {
 			pagePointer++;
 		}
 		
+		System.out.println("Here");
+		
 		if(duration <= 0) {
 			isFinished = true;
 			finishTime = Simulator.time;
 			turnaround = finishTime - startTime;
+			Thread freeM = new Thread(new MemoryManagementThread(new MemoryManagement(3, null, 0, PID)));
+			freeM.start();
+			
+			if(!Simulator.readyQueue.isEmpty()) {
+				ProcessThread peekP =  Simulator.readyQueue.peek();
+				Thread newActiveP = new Thread(peekP);
+				newActiveP.start();
+			}
+			
+			//?ifempty
+			
 		}
 		
 		updateWaitTime();

@@ -144,6 +144,7 @@ public class Simulator {
 			}
 			
 			makeThreadList();
+			startSimulation();
 			
 			sc.close();
 			return true;
@@ -220,12 +221,22 @@ public class Simulator {
 	
 	//!check back if anything is missing
 	public void startSimulation() throws InterruptedException {
-		Thread schThread = new Thread(new SchedulerThread(new Scheduler(3, null)));
+		Thread schThread = new Thread(new SchedulerThread(new Scheduler(4, null)));
 		schThread.start();
 		
 		schThread.join();
 		schThread.stop();
 		
+		int cnt = 0;
+		//System.out.println(readyQueue.size());
+		for(int i=0; i<allThreads.size(); i++) {
+			if(!allThreads.get(i).p.isFinished) {
+				cnt++;
+				System.out.println(allThreads.get(i).p.duration);
+			}
+		}
+		
+		System.out.println("Processes left = "+cnt);
 		//write result to screen
 	}
 	

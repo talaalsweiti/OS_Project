@@ -11,6 +11,10 @@ public class ProcessThread implements Runnable{
 	
 	@Override
 	public void run() {
-		
+		try {
+			p.simulate();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -34,10 +34,23 @@ public class Scheduler {
 			
 		}
 		else if(state == 2) { // from blocked to ready
+			if(Simulator.blockedQueue.size()!=0) {
+				ProcessThread pAdd = Simulator.blockedQueue.peek();
+				Simulator.blockedQueue.remove();
+				Simulator.readyQueue.add(pAdd);
+			}
 			
 		}
 		else if(state == 3) {
 			checkInNewProcess();
+		}
+		else if(state ==4) {
+			checkInNewProcess();
+			if(!Simulator.readyQueue.isEmpty()) {
+				ProcessThread peekP =  Simulator.readyQueue.peek();
+				Thread newActiveP = new Thread(peekP);
+				newActiveP.start();
+			}
 		}
 		
 	}
@@ -50,10 +63,10 @@ public class Scheduler {
 				pt.p.entered = true;
 			}
 		}
-		if(Simulator.readyQueue.size() == 0 && !allFinished()) {
-			Simulator.time+=0.001;
-			checkInNewProcess();
-		}
+//		if(Simulator.readyQueue.size() == 0 && !allFinished()) {
+//			Simulator.time+=0.001;
+//			checkInNewProcess();
+//		}
 	}
 	
 	

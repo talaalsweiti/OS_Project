@@ -14,25 +14,4 @@ public class SchedulerThread implements Runnable {
 		sc.Simulate();
 		
 	}
-	
-
-	
-	
-	
-
-	
-	
-//	public void goGetPage(ProcessThread pt) {
-//		Thread replacement = new Thread(new PageReplacementThread());
-//		replacement.start(); //pagefault => 300 in sync
-//		try {
-//			replacement.join();
-//			readyQueue.add(pt);
-//		}catch(Exception InterruptedException) {
-//			
-//		}
-//		
-//	}
-	
-	
 }
