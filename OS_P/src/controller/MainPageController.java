@@ -110,7 +110,7 @@ public class MainPageController implements Initializable{
     		MyProcess ppp = Simulator.allThreads.get(i).p;
     		totalPages+=ppp.pagesNum;
     		list.add(ppp);
-    	}
+    	}   
     	Simulator.finalResult+="Done!";
     	memory_view.appendText(Simulator.finalResult);
     	totalPageFaults.setText(pageFaults+"");
