@@ -111,7 +111,8 @@ public class MainPageController implements Initializable{
     		totalPages+=ppp.pagesNum;
     		list.add(ppp);
     	}
-    	
+    	Simulator.finalResult+="Done!";
+    	memory_view.appendText(Simulator.finalResult);
     	totalPageFaults.setText(pageFaults+"");
     	faultsRate.setText((pageFaults/totalPages)*100 + "%");
     	process_table.setItems(list);

@@ -10,40 +10,36 @@ public class Scheduler {
 		while(!allFinished()) {
 			checkInNewProcess();
 			if(Simulator.readyQueue.isEmpty()) {
-				//!fix time
-				Simulator.time+=1;
+				Simulator.time+=0.1;
 				checkInNewProcess();
 				continue;
 			}
 			Simulator.time+=0.005; //time for context switch
 			ProcessThread workingProcess = Simulator.readyQueue.peek();
 			Simulator.readyQueue.remove();
-			System.out.println("Entered Process " + workingProcess.p.PID);
+			Simulator.finalResult+="Process " + workingProcess.p.PID + " is under progress\n";
 			double quantumForWorkingProcess = Simulator.quantum;
 			int oldCount = 0;
 			for(int i=workingProcess.p.pagePointer; i<workingProcess.p.pagePointer + quantumForWorkingProcess && workingProcess.p.duration > 0; i++) {
 				double timeBefore = Simulator.time;
 				if(i>=workingProcess.p.pages.size()) { continue;}
 				if(!pageInMemory(workingProcess.p.PID, workingProcess.p.pages.get(i))) {  //page fault
-					System.out.println("Page fault for page " + workingProcess.p.pages.get(i).pageLine + " Process " + workingProcess.p.PID);
+					
+					Simulator.finalResult+="Page fault for page " + workingProcess.p.pages.get(i).pageLine + " - Process " + workingProcess.p.PID + "\n";
+					
 					Simulator.blockedQueue.add(workingProcess);
+					Simulator.finalResult+="Process " + workingProcess.p.PID+ " is in the blocked queue\n";
 					Simulator.time+=0.5; //time for checking page before page fault
-					//!memory management get page
-					//{
-					
-					
 					PageReplacement pr = new PageReplacement(workingProcess.p.pages.get(i));
 					pr.simulate();
 					Simulator.blockedQueue.remove();
 					Simulator.readyQueue.add(workingProcess);
-					
-					//}
 					workingProcess.p.pageFaults++;
 					Simulator.totalPageFaults++;
 					break;
 				}
 				else {
-					System.out.println("Yay " + workingProcess.p.pages.get(i).pageLine);
+					Simulator.finalResult+= "Page "+ workingProcess.p.pages.get(i).pageLine + " is in memory\n";
 					oldCount ++;
 					int position = memoryPageIndex(workingProcess.p.PID, workingProcess.p.pages.get(i));
 					Thread mm = new Thread(new MemoryManagementThread(new MemoryManagement(2, workingProcess.p.pages.get(i), position, 0)));
@@ -62,10 +58,9 @@ public class Scheduler {
 				
 			}
 			workingProcess.p.pagePointer += oldCount;
-			
-			
+
 			if(workingProcess.p.duration <= 0 || workingProcess.p.pagePointer >= workingProcess.p.pages.size()) {
-				System.out.println(" BYE process " + workingProcess.p.PID);
+				Simulator.finalResult+= "Process " + workingProcess.p.PID + " Done!\n";
 				workingProcess.p.isFinished = true;
 				workingProcess.p.finishTime = Simulator.time;
 				workingProcess.p.turnaround = workingProcess.p.finishTime - workingProcess.p.startTime;
@@ -78,15 +73,12 @@ public class Scheduler {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//!!!!!!!!!!!!!!!!!!!PUT IN MANAGEMENT
 			}
 
 			updateWaitTime();
 			
 		}
 	}
-	
-	
 	
 	public boolean allFinished() {
 		for(ProcessThread ptt: Simulator.allThreads) {
@@ -103,7 +95,7 @@ public class Scheduler {
 			if(pt.p.startTime <= Simulator.time && pt.p.entered == false) {
 				Simulator.readyQueue.add(pt);
 				pt.p.entered = true;
-				//System.out.println(pt.p.PID + " Entered the ready queue");
+				Simulator.finalResult+= "Process " + pt.p.PID + " Entered the ready queue\n";
 			}
 		}
 	}
