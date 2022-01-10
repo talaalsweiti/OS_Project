@@ -1,7 +1,6 @@
 package model;
 
-public class MemoryManagementThread implements Runnable{
-	
+public class MemoryManagementThread implements Runnable {
 	MemoryManagement mm;
 	
 	public MemoryManagementThread(MemoryManagement mm) {

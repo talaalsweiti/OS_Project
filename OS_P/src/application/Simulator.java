@@ -18,9 +18,10 @@ import model.Page;
 import model.Process;
 import model.ProcessThread;
 import model.Scheduler;
+//import model.SchedulerThread;
 import model.SchedulerThread;
 
-public class Simulator {
+public class Simulator{
 	public static int numOfProcesses;
 	public static int physicalMemorySize;
 	public static int minNumOfFrames;
@@ -37,6 +38,7 @@ public class Simulator {
 	public static int quantum;
 	//1000 cycles in a second
 	public static double time;
+	//public static int working = 0;
 	
 	public Simulator() {
 		memory = new Frame[physicalMemorySize];
@@ -49,15 +51,21 @@ public class Simulator {
 		time = 0;
 		filledSize = 0;
 		memoryIndex = 0;
+		allThreads = new ArrayList<ProcessThread>();
 	}
 	
+
+	
 	public boolean readFile(String filename) throws FileNotFoundException {
+		
 		File input = new File(filename);
 		try {
+			
 			Scanner sc = new Scanner(input);
-			if(!sc.hasNextLine()) { errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { System.out.println("1"); errorInFile(); sc.close(); return false;}
 			String line = sc.nextLine();
 			if(line.contains(" ")) {
+				System.out.println("2");
 				errorInFile();
 				sc.close();
 				return false;
@@ -65,9 +73,10 @@ public class Simulator {
 			else {
 				numOfProcesses = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) {errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) {System.out.println("3"); errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
+				System.out.println("4");
 				errorInFile();
 				sc.close();
 				return false;
@@ -75,9 +84,10 @@ public class Simulator {
 			else {
 				physicalMemorySize = Integer.parseInt(line);
 			}
-			if(!sc.hasNextLine()) { errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { System.out.println("5"); errorInFile(); sc.close(); return false;}
 			line = sc.nextLine();
 			if(line.contains(" ")) {
+				System.out.println("6");
 				errorInFile();
 				sc.close();
 				return false;
@@ -85,10 +95,12 @@ public class Simulator {
 			else {
 				minNumOfFrames = Integer.parseInt(line);
 			}
+			
 			ArrayList<Process> tempList = new ArrayList<Process>();
-			if(!sc.hasNextLine()) { errorInFile(); sc.close(); return false;}
+			if(!sc.hasNextLine()) { System.out.println("7"); errorInFile(); sc.close(); return false;}
 			
 			while(sc.hasNextLine()) {
+				
 				line = sc.nextLine();
 				if(line.equals("")) {
 					continue;
@@ -113,7 +125,6 @@ public class Simulator {
 					}
 					double startTime = Double.parseDouble(lineSplit[1]);
 					double duration = Double.parseDouble(lineSplit[2]);
-					duration *=60;
 					int size = Integer.parseInt(lineSplit[3]);
 					ArrayList<Page> pages = new ArrayList<Page>();
 					for(int j=4; j<lineSplit.length; j++) {
@@ -124,7 +135,7 @@ public class Simulator {
 							pages.add(p);
 						}
 						else {
-							JOptionPane.showInternalMessageDialog(null, "Some pages were neglected, size error");
+							JOptionPane.showInternalMessageDialog(null, "Some pages were neglected");
 						}
 					}
 					
@@ -132,23 +143,26 @@ public class Simulator {
 					tempList.add(pr);
 				}
 				else {
+					System.out.println("8");
 					errorInFile();
 					sc.close();
 					return false;
 				}
 				
 			}
+			
 			processList = new ArrayList<Process>();
 			for(int k=0; k<tempList.size(); k++) {
 				processList.add(tempList.get(k));
 			}
 			
 			makeThreadList();
-			startSimulation();
 			
+			startSimulation();
 			sc.close();
 			return true;
 		} catch(Exception FileNotFoundException) {
+			System.out.println("Here");
 			errorInFile();
 			return false;
 		}
@@ -220,24 +234,14 @@ public class Simulator {
 	}
 	
 	//!check back if anything is missing
-	public void startSimulation() throws InterruptedException {
-		Thread schThread = new Thread(new SchedulerThread(new Scheduler(4, null)));
-		schThread.start();
-		
-		schThread.join();
-		schThread.stop();
-		
-		int cnt = 0;
-		//System.out.println(readyQueue.size());
-		for(int i=0; i<allThreads.size(); i++) {
-			if(!allThreads.get(i).p.isFinished) {
-				cnt++;
-				System.out.println(allThreads.get(i).p.duration);
-			}
+	public void startSimulation(){
+		memory = new Frame[physicalMemorySize];
+		for(int i=0; i<physicalMemorySize; i++) {
+			memory[i] = new Frame();
 		}
+		Thread th = new Thread(new SchedulerThread(new Scheduler()));
 		
-		System.out.println("Processes left = "+cnt);
-		//write result to screen
+		th.run();
 	}
 	
 	

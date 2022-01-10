@@ -1,8 +1,6 @@
 package model;
 
-
-public class SchedulerThread implements Runnable {
-	
+public class SchedulerThread implements Runnable{
 	Scheduler sc;
 	
 	public SchedulerThread(Scheduler sc) {
@@ -10,8 +8,8 @@ public class SchedulerThread implements Runnable {
 	}
 	
 	@Override
-	public void run() { //will run round robin		
-		sc.Simulate();
-		
+	public void run() {
+		sc.simulate();
 	}
+	
 }
