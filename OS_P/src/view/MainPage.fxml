@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="850.0" prefWidth="1350.0" style="-fx-background-color: #495464;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainPageController">
+<AnchorPane prefHeight="850.0" prefWidth="1350.0" style="-fx-background-color: #495464;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" style="-fx-background-color: #F4F4F2;">
          <top>
             <AnchorPane prefHeight="186.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                <children>
-                  <RadioButton fx:id="second_chance" layoutX="26.0" layoutY="86.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="250.0" selected="true" text="Second-Chance FIFO">
+                  <RadioButton layoutX="26.0" layoutY="86.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="250.0" text="Second-Chance FIFO">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
@@ -32,7 +32,7 @@
                         <Font name="Arial Rounded MT Bold" size="22.0" />
                      </font>
                   </Label>
-                  <RadioButton fx:id="clock" layoutX="27.0" layoutY="129.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="202.0" text="Clock" toggleGroup="$algorithm">
+                  <RadioButton layoutX="27.0" layoutY="129.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="202.0" text="Clock" toggleGroup="$algorithm">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
@@ -42,7 +42,7 @@
                         <Font name="Arial Rounded MT Bold" size="22.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="quantum_text" layoutX="1070.0" layoutY="87.0" prefHeight="35.0" prefWidth="200.0" />
+                  <TextField layoutX="1070.0" layoutY="87.0" prefHeight="35.0" prefWidth="200.0" />
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="505.0" layoutY="34.0" prefHeight="53.0" prefWidth="279.0" text="Virtual Memory" textAlignment="CENTER" textOverrun="CLIP" underline="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="36.0" />
@@ -60,7 +60,7 @@
          <left>
             <AnchorPane prefHeight="600.0" prefWidth="511.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextArea fx:id="memory_view" layoutX="29.0" layoutY="58.0" prefHeight="522.0" prefWidth="454.0" />
+                  <TextArea layoutX="29.0" layoutY="58.0" prefHeight="522.0" prefWidth="454.0" />
                   <Label alignment="CENTER" layoutX="142.0" prefHeight="44.0" prefWidth="201.0" text="Memory view" underline="true">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="24.0" />
@@ -72,16 +72,16 @@
          <center>
             <AnchorPane prefHeight="565.0" prefWidth="767.0" BorderPane.alignment="CENTER">
                <children>
-                  <TableView fx:id="process_table" layoutX="17.0" layoutY="58.0" prefHeight="390.0" prefWidth="745.0">
+                  <TableView layoutX="17.0" layoutY="58.0" prefHeight="390.0" prefWidth="745.0">
                     <columns>
-                      <TableColumn fx:id="pid" prefWidth="93.0" text="PID" />
-                      <TableColumn fx:id="start_time" prefWidth="93.0" text="Start Time" />
-                        <TableColumn fx:id="duration" prefWidth="93.0" text="Duration" />
-                        <TableColumn fx:id="wait_time" prefWidth="93.0" text="Wait Time" />
-                        <TableColumn fx:id="finish_time" prefWidth="93.0" text="Finish Time" />
-                        <TableColumn fx:id="turn_around" prefWidth="93.0" text="TurnAround " />
-                        <TableColumn fx:id="num_pages" prefWidth="93.0" text="Num Of Pages" />
-                        <TableColumn fx:id="num_faluts" prefWidth="93.0" text="Num Of Faults" />
+                      <TableColumn prefWidth="93.0" text="PID" />
+                      <TableColumn prefWidth="93.0" text="Start Time" />
+                        <TableColumn prefWidth="93.0" text="Duration" />
+                        <TableColumn prefWidth="93.0" text="Wait Time" />
+                        <TableColumn prefWidth="93.0" text="Finish Time" />
+                        <TableColumn prefWidth="93.0" text="TurnAround " />
+                        <TableColumn prefWidth="93.0" text="Num Of Pages" />
+                        <TableColumn prefWidth="93.0" text="Num Of Faults" />
                     </columns>
                   </TableView>
                   <Label layoutX="12.0" layoutY="538.0" prefHeight="36.0" prefWidth="200.0" text="Page Faults Rate:">
@@ -89,7 +89,7 @@
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Button layoutX="542.0" layoutY="499.0" mnemonicParsing="false" onAction="#startSimulation" text="Start Simulation">
+                  <Button layoutX="542.0" layoutY="499.0" mnemonicParsing="false" text="Start Simulation">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
@@ -104,8 +104,8 @@
                         <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="total_faults" layoutX="195.0" layoutY="481.0" prefHeight="35.0" prefWidth="90.0" />
-                  <TextField fx:id="faults_rate" layoutX="195.0" layoutY="539.0" prefHeight="35.0" prefWidth="90.0" />
+                  <TextField layoutX="195.0" layoutY="481.0" prefHeight="35.0" prefWidth="90.0" />
+                  <TextField layoutX="195.0" layoutY="539.0" prefHeight="35.0" prefWidth="90.0" />
                </children>
             </AnchorPane>
          </center>

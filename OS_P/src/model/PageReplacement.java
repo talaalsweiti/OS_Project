@@ -14,8 +14,8 @@ public class PageReplacement {
 	public void simulate() {
 		Simulator.time += 0.3; //page fault time
 		if (Simulator.filledSize == Simulator.physicalMemorySize) {// we need page replacement
-			  
-			if (Simulator.algorithm == 1) { // Second chance
+			int algorithm = 1; // !fix here
+			if (algorithm == 1) { // Second chance
 				System.out.println("<<<<<<<<<<<<<<<<<<<<<<");
 				while (Simulator.memory[Simulator.memoryIndex].bitReference == 1) {
 					Simulator.memory[Simulator.memoryIndex].bitReference = 0;
