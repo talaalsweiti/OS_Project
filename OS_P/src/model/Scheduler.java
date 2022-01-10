@@ -85,7 +85,7 @@ public class Scheduler {
 			if(!ptt.p.isFinished) {
 				return false;
 			}
-		}
+		}   
 		return true;
 	}
 	
