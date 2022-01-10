@@ -6,17 +6,22 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
-
+//from all to ready
+import model.Frame;
 import model.Page;
 import model.Process;
 import model.ProcessThread;
+import model.Scheduler;
+//import model.SchedulerThread;
 import model.SchedulerThread;
 
-public class Simulator {
+public class Simulator{
 	public static int numOfProcesses;
 	public static int physicalMemorySize;
 	public static int minNumOfFrames;
@@ -24,9 +29,38 @@ public class Simulator {
 	public static ArrayList<ProcessThread> allThreads;
 	public static int totalPageFaults = 0;
 	
+	public static Frame[] memory;
+	public static int filledSize;
+	public static int memoryIndex;
+	public static Page nextPage; 
+	public static Queue<ProcessThread> readyQueue;
+	public static Queue<ProcessThread> blockedQueue;
+	public static int quantum;
+	//1000 cycles in a second
+	public static double time;
+	//public static int working = 0;
+	
+	public Simulator() {
+		memory = new Frame[physicalMemorySize];
+		for(int i=0; i<physicalMemorySize; i++) {
+			memory[i] = new Frame();
+		}
+		readyQueue = new LinkedList<ProcessThread>();
+		blockedQueue = new LinkedList<ProcessThread>();
+		quantum = 20; //!return to this
+		time = 0;
+		filledSize = 0;
+		memoryIndex = 0;
+		allThreads = new ArrayList<ProcessThread>();
+	}
+	
+
+	
 	public boolean readFile(String filename) throws FileNotFoundException {
+		
 		File input = new File(filename);
 		try {
+			
 			Scanner sc = new Scanner(input);
 			if(!sc.hasNextLine()) { System.out.println("1"); errorInFile(); sc.close(); return false;}
 			String line = sc.nextLine();
@@ -61,10 +95,12 @@ public class Simulator {
 			else {
 				minNumOfFrames = Integer.parseInt(line);
 			}
+			
 			ArrayList<Process> tempList = new ArrayList<Process>();
 			if(!sc.hasNextLine()) { System.out.println("7"); errorInFile(); sc.close(); return false;}
 			
 			while(sc.hasNextLine()) {
+				
 				line = sc.nextLine();
 				if(line.equals("")) {
 					continue;
@@ -114,15 +150,15 @@ public class Simulator {
 				}
 				
 			}
+			
 			processList = new ArrayList<Process>();
 			for(int k=0; k<tempList.size(); k++) {
 				processList.add(tempList.get(k));
 			}
 			
 			makeThreadList();
-			Thread schThread = new Thread(new SchedulerThread());
-			schThread.start();
 			
+			startSimulation();
 			sc.close();
 			return true;
 		} catch(Exception FileNotFoundException) {
@@ -195,13 +231,18 @@ public class Simulator {
 			ProcessThread th = new ProcessThread(processList.get(i));
 			allThreads.add(th);
 		}
-//		for(ProcessThread pt: allThreads) {
-//			System.out.println(pt.p.PID);
-//		}
 	}
 	
-	
-	
+	//!check back if anything is missing
+	public void startSimulation(){
+		memory = new Frame[physicalMemorySize];
+		for(int i=0; i<physicalMemorySize; i++) {
+			memory[i] = new Frame();
+		}
+		Thread th = new Thread(new SchedulerThread(new Scheduler()));
+		
+		th.run();
+	}
 	
 	
 }

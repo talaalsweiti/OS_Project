@@ -1,6 +1,6 @@
 package model;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class Process {
 	public int PID;
@@ -28,9 +28,4 @@ public class Process {
 		pagePointer = 0;
 		this.pageFaults = 0;
 	}
-	
-	public Process() {
-		
-	}
-	
 }

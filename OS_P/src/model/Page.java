@@ -6,6 +6,10 @@ public class Page {
 	public String pageLine;
 	public int pageNumber;
 	
+	public Page() {
+		
+	}
+	
 	public Page(int processID, int pageNumber, String pageLine) {
 		this.processID = processID;
 		this.pageNumber = pageNumber;
